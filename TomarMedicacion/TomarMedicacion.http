@@ -1,0 +1,6 @@
+@TomarMedicacion_HostAddress = http://localhost:5010
+
+GET {{TomarMedicacion_HostAddress}}/Paciente/
+Accept: application/json
+
+###
