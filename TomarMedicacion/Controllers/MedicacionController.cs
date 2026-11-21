@@ -1,36 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TomarMedicacion.Models;
+using TomarMedicacion.Services;
 
 namespace TomarMedicacion.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class MedicacionController : Controller
     {
-        public readonly TomarMedicacionContext _context;
+        public readonly MedicationService medicationService;
 
-        public MedicacionController(TomarMedicacionContext context)
+        public MedicacionController(MedicationService medicationService)
         {
-            _context = context;
+            this.medicationService = medicationService;
         }
 
         [HttpPost]
-        public ActionResult Index(Medicacion medicacion)
+        public async Task<ActionResult> CreateAsync(Medicacion medicacion)
         {
-            _context.Medicacion.Add(medicacion);
-            _context.SaveChanges();
-            return Ok(medicacion);
+           await medicationService.CreateAsync(medicacion);
+           return Ok(medicacion);
         }
 
         [HttpPut] // otra manera [HttpPut("{id}")], con el id dentro de los parámetros del método.
-        public ActionResult UpdateMedicacion(Medicacion medicacion)
+        public async Task<ActionResult> UpdateMedicacion(Medicacion medicacion)
         {
-            var existingMedicacion = _context.Medicacion.Find(medicacion.Id);
+            var existingMedicacion = await medicationService.UpdateAsync(medicacion);
             if (existingMedicacion == null)
             {
                 return NotFound();
             }
-            existingMedicacion.Nombre = medicacion.Nombre;
-            existingMedicacion.Dosis = medicacion.Dosis;
-            _context.SaveChanges();
             return Ok(existingMedicacion);
         }
     }

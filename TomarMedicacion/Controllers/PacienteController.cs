@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TomarMedicacion.Models;
+using TomarMedicacion.Services.Interfaces;
 
 namespace TomarMedicacion.Controllers
 {
@@ -8,32 +9,28 @@ namespace TomarMedicacion.Controllers
     [ApiController]
     public class PacienteController : ControllerBase
     {
-        public readonly TomarMedicacionContext _context;
+        public readonly IPatientService patientService;
 
-        public PacienteController(TomarMedicacionContext context)
+        public PacienteController(IPatientService patientService)
         {
-            _context = context;
+            this.patientService = patientService;
         }
 
         [HttpPost]
-        public ActionResult CreatePaciente(Paciente paciente)
+        public async Task<ActionResult> CreatePaciente(Paciente paciente)
         {
-            _context.Paciente.Add(paciente);
-            _context.SaveChanges();
-            return Ok(paciente);
+            var createdPaciente = await patientService.CreateAsync(paciente);
+            return Ok(createdPaciente);
         }
 
         [HttpPut]
-        public ActionResult UpdatePaciente(Paciente paciente)
+        public async Task<ActionResult> UpdatePaciente(Paciente paciente)
         {
-            var existingPaciente = _context.Paciente.Find(paciente.Id);
+            var existingPaciente = await patientService.UpdateAsync(paciente);
             if (existingPaciente == null)
             {
                 return NotFound();
             }
-            existingPaciente.Nombre = paciente.Nombre;
-            existingPaciente.Celular = paciente.Celular;
-            _context.SaveChanges();
             return Ok(existingPaciente);
         }
     }

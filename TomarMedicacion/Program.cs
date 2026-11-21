@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using TomarMedicacion.Services;
+using TomarMedicacion.Services.Interfaces;
 
 namespace TomarMedicacion
 {
@@ -18,7 +20,9 @@ namespace TomarMedicacion
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            var app = builder.Build();
+            builder.Services.AddScoped<IPatientService, PatientService>();
+
+            var app = builder.Build();            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
