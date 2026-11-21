@@ -3,7 +3,7 @@ using TomarMedicacion.Services.Interfaces;
 
 namespace TomarMedicacion.Services
 {
-    public class RecordatorioService: IRecortadorioService
+    public class RecordatorioService: IRecordatorioService
     {
         public readonly TomarMedicacionContext _context;
         public RecordatorioService(TomarMedicacionContext context)
@@ -25,10 +25,8 @@ namespace TomarMedicacion.Services
             }
             existingRecordatorio.PacienteId = recordatorio.PacienteId;
             existingRecordatorio.Horario = recordatorio.Horario;
-            existingRecordatorio.Medicaciones = recordatorio.Medicaciones;
             existingRecordatorio.Nombre = recordatorio.Nombre;
             existingRecordatorio.FechaFin = recordatorio.FechaFin;
-            existingRecordatorio.Dias = recordatorio.Dias;
             await _context.SaveChangesAsync();
             return existingRecordatorio;
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.AccessControl;
 using TomarMedicacion.Models;
-using TomarMedicacion.Services;
+using TomarMedicacion.Services.Interfaces;
 
 namespace TomarMedicacion.Controllers
 {
@@ -8,9 +9,9 @@ namespace TomarMedicacion.Controllers
     [ApiController]
     public class MedicacionController : Controller
     {
-        public readonly MedicationService medicationService;
+        public readonly IMedicationService medicationService;
 
-        public MedicacionController(MedicationService medicationService)
+        public MedicacionController(IMedicationService medicationService)
         {
             this.medicationService = medicationService;
         }

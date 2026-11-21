@@ -2,7 +2,7 @@
 
 namespace TomarMedicacion.Services.Interfaces
 {
-    public interface IRecortadorioService
+    public interface IRecordatorioService
     {
         Task<Recordatorio> CreateAsync(Recordatorio recordatorio);
         Task<Recordatorio> UpdateAsync(Recordatorio recordatorio);

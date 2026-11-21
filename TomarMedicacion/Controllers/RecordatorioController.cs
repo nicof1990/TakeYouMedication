@@ -1,52 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TomarMedicacion.Models;
+using TomarMedicacion.Services.Interfaces;
 
 namespace TomarMedicacion.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class RecordatorioController : Controller
     {
-        public readonly TomarMedicacionContext _context;
-        public RecordatorioController(TomarMedicacionContext context)
+        public readonly IRecordatorioService _serviceRecordatorio;
+        public RecordatorioController(IRecordatorioService serviceRecordatorio)
         {
-            _context = context;
+            _serviceRecordatorio = serviceRecordatorio;
         }
 
-        [HttpGet("{pacienteId}")]
-        public ActionResult Index(int pacienteID)
-        {
-            Recordatorio? recordatorio = _context.Recordatorio.FirstOrDefault(r => r.PacienteId == pacienteID);
-            if (recordatorio == null)
-            {
-                return NotFound();
-            }
-            return Ok(recordatorio);
-        }
+        //[HttpGet("{pacienteId}")]
+        //public ActionResult Index(int pacienteID)
+        //{
+        //    Recordatorio? recordatorio = _serviceRecordatorio.(pacienteID);
+        //    if (recordatorio == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(recordatorio);
+        //}
 
         [HttpPost]
-        public ActionResult CreateRecordatorio(Recordatorio recordatorio)
+        public async Task<ActionResult> CreateRecordatorio(Recordatorio recordatorio)
         {
-            _context.Recordatorio.Add(recordatorio);
-            _context.SaveChanges();
+            await _serviceRecordatorio.CreateAsync(recordatorio);
             return Ok(recordatorio);
         }
 
-        [HttpPatch]
-        public ActionResult UpdateRecordatorio(Recordatorio recordatorio)
-        {
-            var existingRecordatorio = _context.Recordatorio.Find(recordatorio.Id);
-            if (existingRecordatorio == null)
-            {
-                return NotFound();
-            }
-            existingRecordatorio.PacienteId = recordatorio.PacienteId;
-            existingRecordatorio.Horario = recordatorio.Horario;
-            existingRecordatorio.Medicaciones = recordatorio.Medicaciones;
-            existingRecordatorio.Nombre = recordatorio.Nombre;
-            existingRecordatorio.FechaFin = recordatorio.FechaFin;
-            existingRecordatorio.Dias = recordatorio.Dias;
+        //[HttpPatch]
+        //public ActionResult UpdateRecordatorio(Recordatorio recordatorio)
+        //{
+        //    var existingRecordatorio = _serviceRecordatorio.Recordatorio.Find(recordatorio.Id);
+        //    if (existingRecordatorio == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    existingRecordatorio.PacienteId = recordatorio.PacienteId;
+        //    existingRecordatorio.Horario = recordatorio.Horario;
+        //    existingRecordatorio.Medicaciones = recordatorio.Medicaciones;
+        //    existingRecordatorio.Nombre = recordatorio.Nombre;
+        //    existingRecordatorio.FechaFin = recordatorio.FechaFin;
+        //    existingRecordatorio.Dias = recordatorio.Dias;
 
-            _context.SaveChanges();
-            return Ok(existingRecordatorio);
-        }
+        //    _context.SaveChanges();
+        //    return Ok(existingRecordatorio);
+        //}
     }
 }

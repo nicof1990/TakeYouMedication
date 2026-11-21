@@ -21,6 +21,10 @@ namespace TomarMedicacion
             builder.Services.AddOpenApi();
 
             builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IMedicationService, MedicationService>();
+            builder.Services.AddScoped<IRecordatorioService, RecordatorioService>();
+
+            builder.Services.AddHostedService<ReminderBackgroundService>();
 
             var app = builder.Build();            
 
