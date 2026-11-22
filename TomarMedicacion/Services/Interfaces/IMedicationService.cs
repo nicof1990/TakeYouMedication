@@ -6,5 +6,6 @@ namespace TomarMedicacion.Services.Interfaces
     {
         Task<Medicacion> CreateAsync(Medicacion medicacion);
         Task<Medicacion> UpdateAsync(Medicacion medicacion);
+        Task<Medicacion> GetByIdAsync(int id);
     }
 }

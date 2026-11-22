@@ -28,5 +28,14 @@ namespace TomarMedicacion.Services
             await _context.SaveChangesAsync();
             return existingMedicacion;
         }
+        public async Task<Medicacion> GetByIdAsync(int id)
+        {
+            var medicacion = await _context.Medicacion.FindAsync(id);
+            if (medicacion == null)
+            {
+                throw new Exception("Medicacion not found");
+            }
+            return medicacion;
+        }
     }
 }

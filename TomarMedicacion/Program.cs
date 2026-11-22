@@ -12,7 +12,7 @@ namespace TomarMedicacion
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<TomarMedicacionContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TomarMedicacionConexion")));
+            builder.Services.AddDbContext<TomarMedicacionContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TomarMedicacionConexion")));
 
             // Add services to the container.
 
@@ -25,6 +25,8 @@ namespace TomarMedicacion
             builder.Services.AddScoped<IRecordatorioService, RecordatorioService>();
 
             builder.Services.AddHostedService<ReminderBackgroundService>();
+
+            builder.Services.AddSingleton<TelegramService>();
 
             var app = builder.Build();            
 

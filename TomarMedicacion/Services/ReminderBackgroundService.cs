@@ -8,13 +8,16 @@ namespace TomarMedicacion.Services
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<ReminderBackgroundService> _logger;
+        private readonly TelegramService _telegramService;
 
         public ReminderBackgroundService(
             IServiceScopeFactory scopeFactory,
-            ILogger<ReminderBackgroundService> logger)
+            ILogger<ReminderBackgroundService> logger,
+            TelegramService telegramService)
         {
             _scopeFactory = scopeFactory;
             _logger = logger;
+            _telegramService = telegramService;
         }
 
         protected override async Task ExecuteAsync(
@@ -35,13 +38,26 @@ namespace TomarMedicacion.Services
 
                     var reminders =
                         await context.Recordatorio
-                            .Where(r => r.Horario.Hours == DateTime.Now.Hour && r.Horario.Minutes == DateTime.Now.Minute).ToListAsync<Recordatorio>();
+                            .Where(r => r.Horario.Hours == DateTime.Now.Hour && r.Horario.Minutes == DateTime.Now.Minute).ToListAsync<Recordatorio>();                                    
 
                     foreach (var reminder in reminders)
                     {
+                        var medicacion = context.Medicacion.FirstOrDefault(m => m.Id == reminder.MedicacionId);
                         _logger.LogInformation(
                             "Reminder found: {Name}",
                             reminder.Nombre);
+                        if (medicacion != null)
+                        {
+                            await _telegramService.SendMessageAsync(
+                                reminder.ChatID ?? 0,
+                                $"Recordatorio, tomar medicación: {reminder.Nombre} - {medicacion.Nombre}  {medicacion.Dosis}");
+                        } else
+                        {
+                            await _telegramService.SendMessageAsync(
+                                reminder.ChatID ?? 0,
+                                $"Recordatorio: error en la app, contacte al administrador.");
+                        }
+
                     }
                 }
                 catch (Exception ex)

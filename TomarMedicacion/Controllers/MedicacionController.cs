@@ -33,5 +33,15 @@ namespace TomarMedicacion.Controllers
             }
             return Ok(existingMedicacion);
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetMedicacion(int id)
+        {
+            var medicacion = await medicationService.GetByIdAsync(id);
+            if (medicacion == null)
+            {
+                return NotFound();
+            }
+            return Ok(medicacion);
+        }
     }
 }
