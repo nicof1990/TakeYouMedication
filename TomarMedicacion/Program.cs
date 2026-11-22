@@ -14,6 +14,9 @@ namespace TomarMedicacion
 
             builder.Services.AddDbContext<TomarMedicacionContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TomarMedicacionConexion")));
 
+            var aa =
+builder.Configuration.GetConnectionString("TomarMedicacionConexion");
+
             // Add services to the container.
 
             builder.Services.AddControllers();
