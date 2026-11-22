@@ -38,7 +38,7 @@ namespace TomarMedicacion.Services
 
                     var reminders =
                         await context.Recordatorio
-                            .Where(r => r.Horario.Hours == DateTime.Now.Hour && r.Horario.Minutes == DateTime.Now.Minute).ToListAsync<Recordatorio>();                                    
+                            .Where(r => r.Horario.Hour == DateTime.Now.Hour && r.Horario.Minute == DateTime.Now.Minute).ToListAsync<Recordatorio>();                                    
 
                     foreach (var reminder in reminders)
                     {

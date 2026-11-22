@@ -74,14 +74,14 @@ namespace TomarMedicacion.Migrations
                     b.Property<long?>("ChatID")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("FechaFin")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("FechaFin")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("FechaInicio")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("FechaInicio")
+                        .HasColumnType("date");
 
-                    b.Property<TimeSpan>("Horario")
-                        .HasColumnType("interval");
+                    b.Property<TimeOnly>("Horario")
+                        .HasColumnType("time without time zone");
 
                     b.Property<int>("MedicacionId")
                         .HasColumnType("integer");
